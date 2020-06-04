@@ -11,10 +11,10 @@ namespace RoadRegistry.BackOffice.Api.ZipArchiveWriters
     public class ZipArchiveScenario<TContext> where TContext : DbContext
     {
         private readonly SqlServer _fixture;
-        private readonly IZipArchiveWriter<TContext> _writer;
+        private readonly IZipArchivePathWriter<TContext> _writer;
         private TContext _context;
 
-        public ZipArchiveScenario(SqlServer fixture, IZipArchiveWriter<TContext> writer)
+        public ZipArchiveScenario(SqlServer fixture, IZipArchivePathWriter<TContext> writer)
         {
             _fixture = fixture;
             _writer = writer;
@@ -32,7 +32,7 @@ namespace RoadRegistry.BackOffice.Api.ZipArchiveWriters
             {
                 using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true, Encoding.UTF8))
                 {
-                    await _writer.WriteAsync(archive, _context, CancellationToken.None);
+                    await _writer.WriteAsync(archive, ZipPath.Root, _context, CancellationToken.None);
                 }
                 memoryStream.Position = 0;
                 using (var readArchive = new ZipArchive(memoryStream, ZipArchiveMode.Read, false, Encoding.UTF8))

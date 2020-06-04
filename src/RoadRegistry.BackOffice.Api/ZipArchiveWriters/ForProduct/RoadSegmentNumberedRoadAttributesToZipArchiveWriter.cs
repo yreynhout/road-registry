@@ -13,7 +13,7 @@ namespace RoadRegistry.BackOffice.Api.ZipArchiveWriters.ForProduct
     using Product.Schema;
     using Product.Schema.RoadSegments;
 
-    public class RoadSegmentNumberedRoadAttributesToZipArchiveWriter : IZipArchiveWriter<ProductContext>
+    public class RoadSegmentNumberedRoadAttributesToZipArchiveWriter : IZipArchivePathWriter<ProductContext>
     {
         private readonly RecyclableMemoryStreamManager _manager;
         private readonly Encoding _encoding;
@@ -25,13 +25,17 @@ namespace RoadRegistry.BackOffice.Api.ZipArchiveWriters.ForProduct
             _encoding = encoding ?? throw new ArgumentNullException(nameof(encoding));
         }
 
-        public async Task WriteAsync(ZipArchive archive, ProductContext context, CancellationToken cancellationToken)
+        public async Task WriteAsync(
+            ZipArchive archive,
+            ZipPath path,
+            ProductContext context,
+            CancellationToken cancellationToken)
         {
             if (archive == null) throw new ArgumentNullException(nameof(archive));
             if (context == null) throw new ArgumentNullException(nameof(context));
 
             var count = await context.RoadSegmentNumberedRoadAttributes.CountAsync(cancellationToken);
-            var dbfEntry = archive.CreateEntry("AttGenumweg.dbf");
+            var dbfEntry = archive.CreateEntry(path.Combine("AttGenumweg.dbf"));
             var dbfHeader = new DbaseFileHeader(
                 DateTime.Now,
                 DbaseCodePage.Western_European_ANSI,

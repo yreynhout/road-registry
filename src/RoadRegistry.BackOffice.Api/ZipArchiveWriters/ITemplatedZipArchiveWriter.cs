@@ -5,8 +5,8 @@ namespace RoadRegistry.BackOffice.Api.ZipArchiveWriters
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
 
-    public interface IZipArchiveWriter<in TContext> where TContext : DbContext
+    public interface ITemplatedZipArchiveWriter<in TContext> where TContext : DbContext
     {
-        Task WriteAsync(ZipArchive archive, TContext context, CancellationToken cancellationToken);
+        Task WriteAsync(ZipArchive template, ZipArchive archive, TContext context, CancellationToken cancellationToken);
     }
 }

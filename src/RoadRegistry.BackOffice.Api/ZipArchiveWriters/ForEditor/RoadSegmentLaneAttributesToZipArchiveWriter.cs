@@ -13,7 +13,7 @@ namespace RoadRegistry.BackOffice.Api.ZipArchiveWriters.ForEditor
     using Microsoft.EntityFrameworkCore;
     using Microsoft.IO;
 
-    public class RoadSegmentLaneAttributesToZipArchiveWriter : IZipArchiveWriter<EditorContext>
+    public class RoadSegmentLaneAttributesToZipArchiveWriter : IZipArchivePathWriter<EditorContext>
     {
         private readonly RecyclableMemoryStreamManager _manager;
         private readonly Encoding _encoding;
@@ -24,13 +24,17 @@ namespace RoadRegistry.BackOffice.Api.ZipArchiveWriters.ForEditor
             _encoding = encoding ?? throw new ArgumentNullException(nameof(encoding));
         }
 
-        public async Task WriteAsync(ZipArchive archive, EditorContext context, CancellationToken cancellationToken)
+        public async Task WriteAsync(
+            ZipArchive archive,
+            ZipPath path,
+            EditorContext context,
+            CancellationToken cancellationToken)
         {
             if (archive == null) throw new ArgumentNullException(nameof(archive));
             if (context == null) throw new ArgumentNullException(nameof(context));
 
             var count = await context.RoadSegmentLaneAttributes.CountAsync(cancellationToken);
-            var dbfEntry = archive.CreateEntry("AttRijstroken.dbf");
+            var dbfEntry = archive.CreateEntry(path.Combine("AttRijstroken.dbf"));
             var dbfHeader = new DbaseFileHeader(
                 DateTime.Now,
                 DbaseCodePage.Western_European_ANSI,

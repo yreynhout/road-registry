@@ -11,7 +11,7 @@ namespace RoadRegistry.BackOffice.Api.ZipArchiveWriters.ForEditor
 
     public class RoadNetworkForEditorToZipArchiveWriter : IZipArchiveWriter<EditorContext>
     {
-        private readonly IZipArchiveWriter<EditorContext> _writer;
+        private readonly IZipArchivePathWriter<EditorContext> _writer;
 
         public RoadNetworkForEditorToZipArchiveWriter(RecyclableMemoryStreamManager manager, Encoding encoding)
         {
@@ -46,9 +46,12 @@ namespace RoadRegistry.BackOffice.Api.ZipArchiveWriters.ForEditor
             );
         }
 
-        public Task WriteAsync(ZipArchive archive, EditorContext context, CancellationToken cancellationToken)
+        public Task WriteAsync(
+            ZipArchive archive,
+            EditorContext context,
+            CancellationToken cancellationToken)
         {
-            return _writer.WriteAsync(archive, context, cancellationToken);
+            return _writer.WriteAsync(archive, ZipPath.Root, context, cancellationToken);
         }
     }
 }

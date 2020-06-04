@@ -26,7 +26,7 @@
         {
             var sut = new RoadSegmentEuropeanRoadAttributesToZipArchiveWriter(_fixture.MemoryStreamManager, Encoding.UTF8);
             return Assert.ThrowsAsync<ArgumentNullException>(
-                () => sut.WriteAsync(null, new EditorContext(), default));
+                () => sut.WriteAsync(null, ZipPath.Root, new EditorContext(), default));
         }
 
         [Fact]
@@ -34,7 +34,7 @@
         {
             var sut = new RoadSegmentEuropeanRoadAttributesToZipArchiveWriter(_fixture.MemoryStreamManager, Encoding.UTF8);
             return Assert.ThrowsAsync<ArgumentNullException>(
-                () => sut.WriteAsync(new ZipArchive(Stream.Null, ZipArchiveMode.Create, true), null, default));
+                () => sut.WriteAsync(new ZipArchive(Stream.Null, ZipArchiveMode.Create, true), ZipPath.Root, null, default));
         }
 
         [Fact]

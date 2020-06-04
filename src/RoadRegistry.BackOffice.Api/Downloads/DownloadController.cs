@@ -13,6 +13,7 @@ namespace RoadRegistry.BackOffice.Api.Downloads
     using Microsoft.IO;
     using Microsoft.Net.Http.Headers;
     using Product.Schema;
+    using ZipArchiveWriters;
     using ZipArchiveWriters.ForEditor;
     using ZipArchiveWriters.ForProduct;
 
